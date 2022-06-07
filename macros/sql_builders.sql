@@ -6,6 +6,11 @@
   {% if execute %}
     {% set include_all_dependencies = options.get("include_all_dependencies", false) %}
 
+    {% set mock_this = test_info_json['__MOCK_THIS__'] %}
+    {%- if mock_this is defined -%}
+      {% set dummy = test_info_json.pop('__MOCK_THIS__') %}
+    {%- endif -%}
+
     {% set mocked_models_names = mocked_models.keys() | list %}
     {% set cte_dependencies = [] %}
     {% set dependencies_to_exclude = none if include_all_dependencies else mocked_models_names %}
@@ -31,7 +36,11 @@
         with
         {{ cte_dependencies | join(",\n") }}
       {%- endif -%}
-      select * from ({{ render(model_node.raw_sql) }}) as t
+      {% set raw_sql = model_node.raw_sql %}
+      {% if mock_this is defined %}
+        {% set raw_sql = raw_sql.replace("{{ test }}", "(" + mock_this + ")")%}
+      {% endif %}
+      select * from ({{ render(raw_sql) }}) as t
     {%- endset -%}
 
     {{ return (final_sql) }}
