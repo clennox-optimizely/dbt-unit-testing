@@ -38,7 +38,7 @@
       {%- endif -%}
       {% set raw_sql = model_node.raw_sql %}
       {% if mock_this is defined %}
-        {% set raw_sql = raw_sql.replace("{{ test }}", "(" + mock_this + ")")%}
+        {% set raw_sql = raw_sql.replace("{{ this }}", "(" + mock_this + ")")%}
       {% endif %}
       select * from ({{ render(raw_sql) }}) as t
     {%- endset -%}
