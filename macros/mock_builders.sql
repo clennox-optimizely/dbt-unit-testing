@@ -6,7 +6,7 @@
     {{ dbt_unit_testing.mock_input(model_name, source_name, caller(), options) }}
 {% endmacro %}
 
-{% macro mock_this() %}
+{% macro mock_this(options={}) %}
     {%- set model_sql = dbt_unit_testing.build_input_values_sql(caller(), options) -%}
     {%- set input_as_json = '"__MOCK_THIS__": "' ~ dbt_unit_testing.sql_encode(model_sql) ~ '",' -%}
     {{ return (input_as_json) }}
