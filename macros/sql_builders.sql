@@ -6,9 +6,9 @@
   {% if execute %}
     {% set include_all_dependencies = options.get("include_all_dependencies", false) %}
 
-    {% set mock_this = test_info_json['__MOCK_THIS__'] %}
+    {% set mock_this = mocked_models['__MOCK_THIS__'] %}
     {%- if mock_this is defined -%}
-      {% set dummy = test_info_json.pop('__MOCK_THIS__') %}
+      {% set dummy = mocked_models.pop('__MOCK_THIS__') %}
     {%- endif -%}
 
     {% set mocked_models_names = mocked_models.keys() | list %}
