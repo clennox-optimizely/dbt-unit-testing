@@ -38,8 +38,11 @@
       {%- endif -%}
       {% set raw_sql = model_node.raw_sql %}
       {% if mock_this is defined %}
-        {% set raw_sql = raw_sql.replace("{{ this }}", "(" + mock_this + ")")%}
-      {% endif %}
+        {%- set raw_sql = raw_sql.replace("{{ this }}", "(" + mock_this + ")") -%}
+      {%- endif -%}
+      {% if options['force_incremental'] %}
+        {%- set raw_sql = raw_sql.replace("is_incremental()", "true") -%}
+      {%- endif -%}
       select * from ({{ render(raw_sql) }}) as t
     {%- endset -%}
 
