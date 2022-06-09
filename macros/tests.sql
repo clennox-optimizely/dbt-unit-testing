@@ -133,7 +133,7 @@
       with test_query as (
         {{ test_query }}
       )
-      select 1 from (select 1) as t where {{ failed }}
+      select 1 as test_result from (select 1) as t where {{ failed }}
     )
   {% endif %}
 {% endmacro %}
