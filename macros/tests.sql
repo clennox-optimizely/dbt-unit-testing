@@ -28,7 +28,7 @@
 {% endmacro %}
 
 {% macro ref(model_name) %}
-  {%- if 'unit-test' in config.get('tags') -%}
+  {%- if 'unit-test' in config.get('tags', default=[]) -%}
       {{ dbt_unit_testing.quote_identifier(model_name) }}
   {%- else -%}
       {{ return (builtins.ref(model_name)) }}
@@ -36,7 +36,7 @@
 {% endmacro %}
 
 {% macro source(source, model_name) %}
-  {%- if 'unit-test' in config.get('tags') -%}
+  {%- if 'unit-test' in config.get('tags', default=[]) -%}
       {{ dbt_unit_testing.quote_identifier(source ~ "__" ~ model_name) }}
   {%- else -%}
       {{ return (builtins.source(source, model_name)) }}
